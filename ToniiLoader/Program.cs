@@ -171,30 +171,9 @@ namespace ToniiLoader
                         Directory.Delete(forgeFolder, true);
                         Console.WriteLine();
 
-                        Log("Scarico l'installer di forge");
-                        FakeLoading(100);
-                        string info = ReadLauncherInfoFile();
-                        string[] lines = info.Split('\n');
-
-                        string installerLink = lines[1].Split(' ')[1];
-                        string forgeInstallerPath = Path.Combine(Path.GetTempPath(), "tonii-fi.jar");
-                        string installerExecutorPath = Path.Combine(Path.GetTempPath(), "tonii-exec.bat");
-
-                        DownloadFile(installerLink, forgeInstallerPath);
-                        File.WriteAllText(installerExecutorPath, $"@echo off\ncolor d\necho TONI FORGE INSTALLER\ncolor 7\njava -jar {forgeInstallerPath}\ncolor a\necho ADESSO PUOI TORNARE AL LOADER\npause");
-                        Console.WriteLine();
-                        Log("Premi qualsiasi tasto per eseguire l'installer di forge");
-                        Console.ReadKey(true);
-                        Process p = Process.Start(installerExecutorPath);
-                        Console.WriteLine();
-                        Log("Continua l'installazione sull'applicazione che ho appena aperto. Clicca un tasto qualsiasi una volta conclusa.");
-                        Console.ReadKey(true);
-                        if (p != null && !p.HasExited && IsWindowOpen(p.MainWindowTitle))
-                            p.Kill();
-                        Thread.Sleep(2000);
-                        File.Delete(forgeInstallerPath);
-                        File.Delete(installerExecutorPath);
-                        Console.WriteLine();
+                        Directory.CreateDirectory(forgeFolder);
+                        DownloadFile("https://github.com/tonii-dev/ToniiAPI/blob/main/1.20.1-forge-47.3.12.jar?raw=true", Path.Combine(forgeFolder, "1.20.1-forge-47.3.12.jar"));
+                        DownloadFile("https://github.com/tonii-dev/ToniiAPI/blob/main/1.20.1-forge-47.3.12.json?raw=true", Path.Combine(forgeFolder, "1.20.1-forge-47.3.12.json"));
                         Log("Forge installato con successo. Clicca un tasto qualsiasi per tornare alla home.");
                         Console.ReadKey();
                         WriteOptions();
@@ -212,27 +191,9 @@ namespace ToniiLoader
                     Console.WriteLine();
                     Log("Scarico l'installer di forge");
                     FakeLoading(100);
-                    string info = ReadLauncherInfoFile();
-                    string[] lines = info.Split('\n');
-
-                    string installerLink = lines[1].Split(' ')[1];
-                    string forgeInstallerPath = Path.Combine(Path.GetTempPath(), "tonii-fi.jar");
-                    string installerExecutorPath = Path.Combine(Path.GetTempPath(), "tonii-exec.bat");
-
-                    DownloadFile(installerLink, forgeInstallerPath);
-                    File.WriteAllText(installerExecutorPath, $"@echo off\necho TONI FORGE INSTALLER\njava -jar {forgeInstallerPath}\npause");
-                    Console.WriteLine();
-                    Log("Premi qualsiasi tasto per eseguire l'installer di forge");
-                    Console.ReadKey(true);
-                    Process p = Process.Start(installerExecutorPath);
-                    Console.WriteLine();
-                    Log("Continua l'installazione sull'applicazione che ho appena aperto. Clicca un tasto qualsiasi una volta conclusa.");
-                    Console.ReadKey(true);
-                    if (p != null && !p.HasExited && IsWindowOpen(p.MainWindowTitle))
-                        p.Kill();
-                    Thread.Sleep(2000);
-                    File.Delete(forgeInstallerPath);
-                    File.Delete(installerExecutorPath);
+                    Directory.CreateDirectory(forgeFolder);
+                    DownloadFile("https://github.com/tonii-dev/ToniiAPI/blob/main/1.20.1-forge-47.3.12.jar?raw=true", Path.Combine(forgeFolder, "1.20.1-forge-47.3.12.jar"));
+                    DownloadFile("https://github.com/tonii-dev/ToniiAPI/blob/main/1.20.1-forge-47.3.12.json?raw=true", Path.Combine(forgeFolder, "1.20.1-forge-47.3.12.json"));
                     Console.WriteLine();
                 }
 
@@ -768,7 +729,7 @@ namespace ToniiLoader
             Log("Controllo la versione del loader");
             FakeLoading(100);
 
-            string version = "1.0";
+            string version = "1.0.1";
             string latest = ReadLauncherInfoFile().Split('\n')[0].Split(' ')[1];
             Console.Title = $"Tonii Loader {version}";
             if (version != latest)
